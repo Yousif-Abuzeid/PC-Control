@@ -4,6 +4,7 @@
 #include <iostream>
 #include <netinet/in.h>
 #include <stdexcept>
+#include <string>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 
@@ -77,8 +78,9 @@ namespace pcControl {
 
         }
 
-        void ServerSocket::sendData(const std::string& data) {
+        void ServerSocket::sendData(std::string data){ 
             try{
+                
                 if(send(clientSockFd, data.c_str(), data.size(), 0)<0){
                     throw std::runtime_error("Error Sending Data");
                 }
@@ -86,8 +88,8 @@ namespace pcControl {
             }catch(std::exception &e){
                 std::cerr<<e.what()<<std::endl;
             }
+        
         }
-
         std::string ServerSocket::receiveData(){
             try{
                 int valread = read(clientSockFd, buffer, default_buffer_size);
@@ -134,8 +136,9 @@ namespace pcControl {
             return clientSockFd;
         }
 
-        void ClientSocket::sendData(const std::string& data){
+        void ClientSocket::sendData(std::string data){
             try{
+                
                 if(send(clientSockFd, data.c_str(), data.size(), 0)<0){
                     throw std::runtime_error("Error Sending Data");
                 }

@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <memory>
+#include <nlohmann/json.hpp>
 #include <sys/socket.h>
 #include <unistd.h>
 #include <netinet/in.h>
@@ -37,7 +38,7 @@ public:
     virtual int getSocket() const =0;
     //void connectSocket(const std::string& ip, int port) //client
     //int acceptConnection();
-    virtual void sendData(const std::string& data)=0;
+    virtual void sendData(std::string data)=0;
     virtual std::string receiveData()=0;
 };
 
@@ -73,7 +74,7 @@ class ServerSocket : public mySocket {
     void acceptConnection();
 
     // Send data to client
-    void sendData(const std::string& data) override;
+    void sendData(std::string data) override;
 
     // Receive data from client
     std::string receiveData() override;
@@ -106,7 +107,7 @@ class ClientSocket : public mySocket {
     // Connect to server
     void connectSocket();
     // Send data to server
-    void sendData(const std::string& data) override;
+    void sendData(std::string data) override;
 
     // Receive data from server
     std::string receiveData() override;
