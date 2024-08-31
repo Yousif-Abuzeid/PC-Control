@@ -1,4 +1,5 @@
 #include "Lib/socket.hpp"
+#include <nlohmann/json.hpp>
 
 int main() {
     try {
@@ -11,10 +12,17 @@ int main() {
         // Accept a connection
         server.acceptConnection();
 
-        // Send a message to the client
-        std::string message = "Hello from the server!";
-        server.sendData(message);
+         std::string response = 
+            "HTTP/1.1 200 OK\r\n"
+            "Content-Type: text/plain\r\n"
+            "Content-Length: 13\r\n"
+            "Connection: close\r\n"
+            "\r\n"
+            "Hello, world!";
         
+       // Send response to client
+    
+        server.sendData(response);
     } catch (const std::exception& e) {
         std::cerr << "Server error: " << e.what() << std::endl;
     }
