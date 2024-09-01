@@ -4,7 +4,8 @@
 #include <fstream>
 #include <string>
 #include <vector>
-
+#include <filesystem>
+#include "socket.hpp"
 namespace pcControl {
     namespace fileHandler {
         class FileHandler {
@@ -12,12 +13,14 @@ namespace pcControl {
                 std::string filePath;
                 std::fstream file;
             public:
-                FileHandler(std::string& filePath);
+                FileHandler(const std::string& filePath);
                 ~FileHandler();
+                void setFilePath(const std::string& filePath);
                 void writeToFile(const std::string& filePath,const std::string& data);
                 std::string readFromFile();
 
-                void sendFile(std::string data);
+                void sendFile(const std::string& filePath,const int port);
+
                 std::vector<std::string> listFiles(const std::string& dirPath);
         };
     }
