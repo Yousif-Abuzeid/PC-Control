@@ -1,5 +1,4 @@
 #include "../Lib/socket.hpp"
-#include <cstddef>
 #include <exception>
 #include <iostream>
 #include <netinet/in.h>
@@ -13,6 +12,15 @@ namespace pcControl {
 
 
     namespace sockets{ 
+
+        bool mySocket::CheckConnection(){
+            int result = recv(getSocket(), buffer, default_buffer_size, MSG_PEEK|MSG_DONTWAIT);
+            if(result == 0) {
+                return false;
+            } else {
+                return true;
+            }
+        }
 
         ServerSocket::ServerSocket(int port){
             /*

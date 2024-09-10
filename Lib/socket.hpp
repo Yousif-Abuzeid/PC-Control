@@ -35,11 +35,14 @@ public:
 
     ~mySocket() =default;
     virtual char* getBuffer() { return buffer; }
+    virtual void clearBuffer() { memset(buffer, 0, default_buffer_size); }
     virtual int getSocket() const =0;
     //void connectSocket(const std::string& ip, int port) //client
     //int acceptConnection();
     virtual void sendData(std::string data)=0;
     virtual std::string receiveData()=0;
+    bool CheckConnection();
+
 };
 
 class ServerSocket : public mySocket {
@@ -75,7 +78,7 @@ class ServerSocket : public mySocket {
 
     // Send data to client
     void sendData(std::string data) override;
-
+    
     // Receive data from client
     std::string receiveData() override;
 
