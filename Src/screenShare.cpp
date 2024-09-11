@@ -108,6 +108,9 @@ namespace pcControl{
                 delete[] frame;
             }
         }
+        void screenShareServer::stop(){
+            server.closeSocket();
+        }
     }
 
     

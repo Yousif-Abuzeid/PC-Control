@@ -52,6 +52,7 @@ namespace pcControl {
         public:
         screenShareServer(int port);
         void start();
+        void stop();
     };
 
 }
