@@ -58,7 +58,7 @@ class ServerSocket : public mySocket {
     public:
 
     // Constructor
-    ServerSocket(int port=default_port);
+    ServerSocket(int port=default_port,int domain=default_domain,int type=default_type,int protocol=default_protocol);
     // Destructor
     ~ServerSocket();
     

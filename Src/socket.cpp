@@ -22,12 +22,12 @@ namespace pcControl {
             }
         }
 
-        ServerSocket::ServerSocket(int port){
+        ServerSocket::ServerSocket(int port,int domain,int type,int protocol){
             /*
                 Try to open Socket if not opened correctly Throw Error
             */
             try{
-            serverSockFd = socket(default_domain,default_type,default_protocol);
+            serverSockFd = socket(domain,type,protocol);
                 if(serverSockFd<0){
                     throw std::runtime_error("Error creating socket");
                 }
