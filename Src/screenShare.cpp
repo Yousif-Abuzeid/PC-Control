@@ -90,9 +90,14 @@ namespace pcControl{
                 cv::imencode(".jpg", frame, buffer, params);
                 return buffer;
         }
-        screenShareServer::screenShareServer(int port):server(port){
+        screenShareServer::screenShareServer(int port):server(port, default_domain, default_type, default_protocol){
             
         }
+        /*
+        * Start the screen sharing server
+        * Capture the screen, encode the frame to JPEG and send it to the client
+        * This function runs indefinitely
+        */
         void screenShareServer::start(){
             server.listenSocket();
             server.acceptConnection();

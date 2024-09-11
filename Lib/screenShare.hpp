@@ -4,14 +4,24 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <X11/Xos.h>
+#include <sys/socket.h>
 #include "socket.hpp"
 
 
 namespace pcControl {
     namespace screenShare {
         /*Default screen size*/
-      const  int screen_width = 1920;
-      const  int screen_height = 1080;
+    const  int screen_width = 1920;
+    const  int screen_height = 1080;
+
+      /*
+        Default Server Settings
+        For UDP Server
+      */
+    const int default_port = 8090;
+    const int default_domain = AF_INET;
+    const int default_type = SOCK_DGRAM;
+    const int default_protocol = 0;
         /*Class to Capture Screen*/
         class screenCapture{
             private:
