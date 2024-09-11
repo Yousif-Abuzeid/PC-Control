@@ -111,10 +111,16 @@ namespace pcControl {
             }
             return "";
         }
+        void ServerSocket::closeSocket(){
+            close(serverSockFd);
+        }
+        void ServerSocket::closeClientSocket(){
+            close(clientSockFd);
+        }
 
         ServerSocket::~ServerSocket(){
-            close(serverSockFd);
-            close(clientSockFd);
+            closeClientSocket();
+            closeSocket();
         }
 
         ClientSocket::ClientSocket(const std::string& ip, int port):ip(ip){

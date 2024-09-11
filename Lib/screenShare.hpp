@@ -26,13 +26,12 @@ namespace pcControl {
 
             unsigned char* captureScreen(int width=screen_width, int height=screen_height);
         };
-
-    }
+    
     /*Class to Encode Frame*/
     class frameEncoder{
-        frameEncoder();
-        ~frameEncoder();
-        std::string encodeFrame(unsigned char* frame, int width=screenShare::screen_width, int height=screenShare::screen_height);
+        public:
+    std::vector<unsigned char> encodeToJPEG(unsigned char* pixels, int width, int height, int quality = 50);
+    
     };
 
     class screenShareServer{
@@ -47,7 +46,7 @@ namespace pcControl {
 
 }
 
-
+}
 
 
 #endif // !SCREENSHARE_HPP

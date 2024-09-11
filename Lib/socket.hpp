@@ -82,6 +82,11 @@ class ServerSocket : public mySocket {
     // Receive data from client
     std::string receiveData() override;
 
+    // Close server socket
+    void closeSocket();
+    // Close client socket
+    void closeClientSocket();
+
     
 
 };

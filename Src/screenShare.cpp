@@ -1,7 +1,13 @@
 #include "../Lib/screenShare.hpp"
 #include <X11/Xlib.h>
+#include <opencv4/opencv2/core/mat.hpp>
+/*
+* Undefine Status macro defined in Xlib.h to fix build conflicts
+*/
+#undef Status
 #include <cstring>
 #include <exception>
+#include <opencv2/opencv.hpp>
 
 
 namespace pcControl{
@@ -57,9 +63,47 @@ namespace pcControl{
             }catch(std::exception &e){
                 std::cerr<<e.what()<<std::endl;
             }
+            /*
+            * Copy the image data to a buffer
+            */
+
+
             unsigned char* frame = new unsigned char[width*height*4];
             std::memcpy(frame, img->data, width*height*4);
             return frame;
         }
+
+        /*
+        * Encode the frame to JPEG
+        * pixels: The frame to encode
+        * width: The width of the frame
+        * height: The height of the frame
+        * quality: The quality of the JPEG - default is 50 to reduce size and ensure smooth transmission
+
+        */
+        std::vector<unsigned char> frameEncoder::encodeToJPEG(unsigned char* pixels, int width, int height, int quality){
+           cv::Mat frame(height, width, CV_8UC4, pixels);
+              std::vector<unsigned char> buffer;
+                std::vector<int> params;
+                params.push_back(cv::IMWRITE_JPEG_QUALITY);
+                params.push_back(quality);
+                cv::imencode(".jpg", frame, buffer, params);
+                return buffer;
+        }
+        screenShareServer::screenShareServer(int port):server(port){
+            
+        }
+        void screenShareServer::start(){
+            server.listenSocket();
+            server.acceptConnection();
+            while(true){
+                unsigned char* frame = screen.captureScreen();
+                std::vector<unsigned char> jpeg = encoder.encodeToJPEG(frame, screen_width, screen_height);
+                server.sendData(std::string(jpeg.begin(), jpeg.end()));
+                delete[] frame;
+            }
+        }
     }
+
+    
 }
