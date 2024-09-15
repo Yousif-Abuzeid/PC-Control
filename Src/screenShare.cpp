@@ -1,6 +1,7 @@
 #include "../Lib/screenShare.hpp"
 #include <X11/Xlib.h>
 #include <opencv4/opencv2/core/mat.hpp>
+#include <sys/socket.h>
 /*
 * Undefine Status macro defined in Xlib.h to fix build conflicts
 */
@@ -8,6 +9,7 @@
 #include <cstring>
 #include <exception>
 #include <opencv2/opencv.hpp>
+#include <thread>
 
 
 namespace pcControl{
@@ -90,7 +92,7 @@ namespace pcControl{
                 cv::imencode(".jpg", frame, buffer, params);
                 return buffer;
         }
-        screenShareServer::screenShareServer(int port):server(port, default_domain, default_type, default_protocol){
+        screenShareServer::screenShareServer(int port):server(port, default_domain, SOCK_STREAM, default_protocol){
             
         }
         /*
@@ -99,17 +101,24 @@ namespace pcControl{
         * This function runs indefinitely
         */
         void screenShareServer::start(){
-            server.listenSocket();
+            
+            server.listenSocket(5);
             server.acceptConnection();
+           
+            
             while(true){
                 unsigned char* frame = screen.captureScreen();
                 std::vector<unsigned char> jpeg = encoder.encodeToJPEG(frame, screen_width, screen_height);
                 server.sendData(std::string(jpeg.begin(), jpeg.end()));
                 delete[] frame;
+                std::this_thread::sleep_for(std::chrono::milliseconds(10));
             }
         }
         void screenShareServer::stop(){
             server.closeSocket();
+        }
+        screenShareServer::~screenShareServer(){
+            stop();
         }
     }
 

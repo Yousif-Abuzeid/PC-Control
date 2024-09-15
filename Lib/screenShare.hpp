@@ -48,11 +48,12 @@ namespace pcControl {
         private:
         sockets::ServerSocket server;
         screenShare::screenCapture screen;
+        void stop();
         frameEncoder encoder;
         public:
         screenShareServer(int port);
+        ~screenShareServer();
         void start();
-        void stop();
     };
 
 }
